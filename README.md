@@ -3,9 +3,9 @@
 This component, running on ESP32 hardware, implements the soft access point for a mobile platform (truck, tractor, etc.) and is part of a
 precision vehicle guidance system using the AgOpenGps solution.
 
-[AgOpenGPS GitHub] (https://github.com/farmerbriantee/AgOpenGPS)
+[AgOpenGPS GitHub](https://github.com/farmerbriantee/AgOpenGPS)
 
-[AgOpenGPS Web] (https://discourse.agopengps.com/)
+[AgOpenGPS Web](https://discourse.agopengps.com/)
 
 The AgOpenSolution utilizes a simple UDP network topology for intercommunication between subsystems within, or in close proximity to, the vehicle cab.  These subsystems include:
 
