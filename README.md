@@ -15,3 +15,5 @@ The AgOpenSolution utilizes a simple UDP network topology for intercommunication
 4. Section controls for implements and other peripheral devices
 
 
+## CHANGE HISTORY
+⋅⋅* 6/10/2022     Initial commit of the soft access point feature and a serial-to-UDP bridge for providing navigation info to the network. 
