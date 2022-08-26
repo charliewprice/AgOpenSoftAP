@@ -3,21 +3,36 @@
  *
  * Charlie Price 2022 
 */
+//#define SERIAL_DEBUG
+#include "BluetoothSerial.h"
+
+/* Check if Bluetooth configurations are enabled in the SDK */
+/* If not, then you have to recompile the SDK */
+#if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
+#error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
+#endif
+
+BluetoothSerial SerialBT;
+
+#include <EEPROM.h>//https://github.com/espressif/arduino-esp32/tree/master/libraries/EEPROM
 #include <WiFi.h>
 #include <WiFiUdp.h>
 #include <WebServer.h>
 
+//Constants
+#define EEPROM_SIZE 12
+
 #define net 4
-const char *ssid = "FNET";
-const char *passphrase = "987654321";
+const char *ssid = "RoverNet";
+const char *passphrase = "74777477";
 
-IPAddress local_IP(192,168,4,1);
-IPAddress gateway(192,168,4,1);
-IPAddress subnet(255,255,255,0);
+IPAddress local_IP(192,168,4,1);      //IP of the SoftAP
+IPAddress gateway(192,168,4,1);       //
+IPAddress subnet(255,255,255,0);      //
 
-IPAddress udpRemoteIp(192,168,4,255);
-int       udpRemotePort=9999;
-int       udpLocalPort=7777;
+IPAddress udpRemoteIp(192,168,4,255); //broadcast address for GNSS packets received on Serial2
+int       udpRemotePort=9999;         //
+int       udpLocalPort=7777;          //
 
 char packetBuffer[255]; //buffer to hold outgoing packet
 int packetPtr;
@@ -29,6 +44,10 @@ WebServer server(80);
 //UART2, Serial2 pins for the GNSS UDP Bridge
 #define RXD2 16
 #define TXD2 17
+#define SERIAL2_BAUD 115200
+
+boolean blink;
+int LED_BUILTIN = 2;
 
 void WiFiEvent(WiFiEvent_t event) {
   Serial.printf("[WiFi-event] event: %d\n", event);
@@ -56,14 +75,18 @@ void WiFiEvent(WiFiEvent_t event, system_event_info_t info) {
 */
 
 void setup() {
- Serial2.begin(9600, SERIAL_8N1, RXD2, TXD2);
-  
+ Serial2.begin(SERIAL2_BAUD, SERIAL_8N1, RXD2, TXD2);
+ 
  Serial.begin(115200);
- while(!Serial) {
+ #if defined(SERIAL_DEBUG)
+ //while(!Serial) {
      
- }
+ //}
  delay(2000);
+ #endif 
+ 
  Serial.println();
+ Serial.println("Serial 2 started.");
  
  WiFi.mode(WIFI_AP);
  
@@ -97,6 +120,11 @@ void setup() {
  
  packetPtr = 0;
  //Udp.begin(local_IP, udpLocalPort);
+
+ SerialBT.begin("SoftAP");
+ Serial.println("Bluetooth Started! Ready to pair...");
+
+ pinMode(LED_BUILTIN, OUTPUT);
 }
 
 void loop() {
@@ -139,11 +167,20 @@ void loop() {
     //Serial.println(endCode);
     
     packetBuffer[packetPtr++] = 0;
-    //Serial.print(packetBuffer);
+    Serial.print(packetBuffer);
     
     c=0;
     packetPtr=0;
     memset(packetBuffer, 0, sizeof packetBuffer);     
  }
+
+// if (blink) {
+   digitalWrite(LED_BUILTIN, HIGH);
+   blink = false;
+// } else {
+//   digitalWrite(LED_BUILTIN, LOW);
+//   blink = true;
+// }
+
  
 }
