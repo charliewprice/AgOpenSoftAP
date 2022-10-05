@@ -76,9 +76,10 @@ void WiFiEvent(WiFiEvent_t event, system_event_info_t info) {
 
 void setup() {
  Serial2.begin(SERIAL2_BAUD, SERIAL_8N1, RXD2, TXD2);
+ Serial.println("Serial 2 started.");
  
+  #if defined(SERIAL_DEBUG)
  Serial.begin(115200);
- #if defined(SERIAL_DEBUG)
  //while(!Serial) {
      
  //}
@@ -86,7 +87,7 @@ void setup() {
  #endif 
  
  Serial.println();
- Serial.println("Serial 2 started.");
+ 
  
  WiFi.mode(WIFI_AP);
  
