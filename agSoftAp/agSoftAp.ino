@@ -3,7 +3,7 @@
  *
  * Charlie Price 2022 
 */
-//#define SERIAL_DEBUG
+#define SERIAL_DEBUG
 #include "BluetoothSerial.h"
 
 /* Check if Bluetooth configurations are enabled in the SDK */
