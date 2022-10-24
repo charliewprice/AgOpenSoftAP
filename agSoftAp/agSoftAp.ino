@@ -26,11 +26,11 @@ BluetoothSerial SerialBT;
 const char *ssid = "RoverNet";
 const char *passphrase = "74777477";
 
-IPAddress local_IP(192,168,4,1);      //IP of the SoftAP
-IPAddress gateway(192,168,4,1);       //
+IPAddress local_IP(192,168,1,1);      //IP of the SoftAP
+IPAddress gateway(192,168,1,1);       //
 IPAddress subnet(255,255,255,0);      //
 
-IPAddress udpRemoteIp(192,168,4,255); //broadcast address for GNSS packets received on Serial2
+IPAddress udpRemoteIp(192,168,1,255); //broadcast address for GNSS packets received on Serial2
 int       udpRemotePort=9999;         //
 int       udpLocalPort=7777;          //
 
